@@ -2,6 +2,7 @@ package com.sentinela.incident.service;
 
 import com.sentinela.event.entity.Event;
 import com.sentinela.event.repository.EventRepository;
+import com.sentinela.exception.BusinessException;
 import com.sentinela.exception.ResourceNotFoundException;
 import com.sentinela.incident.dto.CreateIncidentRequest;
 import com.sentinela.incident.dto.EventSummary;
@@ -51,7 +52,7 @@ public class IncidentService {
         if (user != null && !user.isBlank()) {
             incidents = incidents.stream()
                     .filter(incident -> incident.getUserInvolved() != null &&
-                            incident.getUserInvolved().equalsIgnoreCase(user))
+                    incident.getUserInvolved().toLowerCase().contains(user.toLowerCase()))
                     .toList();
         }
 
@@ -118,7 +119,9 @@ public class IncidentService {
             incident.setEvents(new ArrayList<>(events));
         }
 
-        return IncidentResponse.fromEntity(incidentRepository.save(incident));
+        IncidentResponse response = IncidentResponse.fromEntity(incidentRepository.save(incident));
+        response.setRulesTriggered(request.getRulesTriggered());
+        return response;
     }
 
     private IncidentSeverity calculateSeverity(Integer riskScore) {
@@ -139,7 +142,9 @@ public class IncidentService {
         };
 
         if (!valid) {
-            throw new IllegalArgumentException("Transição de status inválida");
+            throw new BusinessException(
+                    String.format("Transição inválida de %s para %s", current, next)
+            );
         }
     }
 }

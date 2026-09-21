@@ -43,7 +43,7 @@ public class UserService {
         user.setName(request.getName());
         user.setEmail(request.getEmail());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
-        user.setRole(request.getRole());
+        user.setRole(request.getRole() != null ? request.getRole() : com.sentinela.user.entity.UserRole.ANALYST);
 
         return UserResponse.fromEntity(userRepository.save(user));
     }
