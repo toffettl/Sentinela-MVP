@@ -4,6 +4,7 @@ import com.sentinela.event.dto.EventRequest;
 import com.sentinela.event.dto.EventResponse;
 import com.sentinela.event.service.EventService;
 import com.sentinela.rust.RustEventRequest;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -34,7 +35,7 @@ public class EventController {
     }
 
     @PostMapping("/from-rust")
-    private EventResponse saveFromRust(@RequestBody RustEventRequest rustEventRequest) {
+    private EventResponse saveFromRust(@Valid @RequestBody RustEventRequest rustEventRequest) {
         return eventService.saveFromRust(rustEventRequest);
     }
 

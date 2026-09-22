@@ -46,7 +46,13 @@ public class EventService {
     }
 
     public EventResponse saveFromRust(RustEventRequest rustEventRequest) {
+        var existingEvent = repository.findByExternalId(rustEventRequest.id());
+        if (existingEvent.isPresent()) {
+            return EventResponse.fromEntity(existingEvent.get());
+        }
+
         Event event = new Event();
+        event.setExternalId(rustEventRequest.id());
         event.setIp(rustEventRequest.ip());
         event.setSource(rustEventRequest.source());
         event.setTimestamp(rustEventRequest.timestamp());
@@ -81,7 +87,6 @@ public class EventService {
 
     public Event eventRequestToEvent(EventRequest eventRequest) {
         Event event = new Event();
-        event.setId(eventRequest.getId());
         event.setIp(eventRequest.getIp());
         event.setSource(eventRequest.getSource());
         event.setTimestamp(eventRequest.getTimestamp());

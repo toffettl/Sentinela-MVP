@@ -1,5 +1,7 @@
 com\sentinela\incident\dto\IncidentResponse.class
+com\sentinela\exception\ErrorResponse.class
 com\sentinela\securityrule\controller\SecurityRuleController.class
+com\sentinela\seed\controller\SeedController.class
 com\sentinela\asset\dto\AssetRequest.class
 com\sentinela\detection\dto\DetectionRequest.class
 com\sentinela\event\repository\EventRepository.class
@@ -21,6 +23,7 @@ com\sentinela\detection\controller\DetectionController.class
 com\sentinela\exception\ResourceNotFoundException.class
 com\sentinela\incident\repository\IncidentNoteRepository.class
 com\sentinela\incident\dto\IncidentUpdateRequest.class
+com\sentinela\exception\GlobalExceptionHandler.class
 com\sentinela\detection\dto\DetectionResponse.class
 com\sentinela\event\entity\EventType.class
 com\sentinela\user\dto\UserResponse.class
@@ -31,10 +34,12 @@ com\sentinela\detection\entity\Detection.class
 com\sentinela\securityrule\dto\SecurityRuleRequest.class
 com\sentinela\user\entity\User.class
 com\sentinela\asset\entity\Asset.class
+com\sentinela\dashboard\dto\DashboardSummaryResponse.class
 com\sentinela\incident\dto\CreateIncidentRequest.class
 com\sentinela\incident\repository\IncidentRepository.class
 com\sentinela\user\repository\UserRepository.class
 com\sentinela\detection\repository\DetectionRepository.class
+com\sentinela\dashboard\controller\DashboardController.class
 com\sentinela\event\entity\Event.class
 com\sentinela\incident\entity\IncidentSeverity.class
 com\sentinela\asset\repository\AssetRepository.class

@@ -6,6 +6,8 @@ D:\Code\Github\Sentinela\java-backend\src\main\java\com\sentinela\asset\entity\A
 D:\Code\Github\Sentinela\java-backend\src\main\java\com\sentinela\asset\repository\AssetRepository.java
 D:\Code\Github\Sentinela\java-backend\src\main\java\com\sentinela\asset\service\AssetService.java
 D:\Code\Github\Sentinela\java-backend\src\main\java\com\sentinela\config\SecurityConfig.java
+D:\Code\Github\Sentinela\java-backend\src\main\java\com\sentinela\dashboard\controller\DashboardController.java
+D:\Code\Github\Sentinela\java-backend\src\main\java\com\sentinela\dashboard\dto\DashboardSummaryResponse.java
 D:\Code\Github\Sentinela\java-backend\src\main\java\com\sentinela\detection\controller\DetectionController.java
 D:\Code\Github\Sentinela\java-backend\src\main\java\com\sentinela\detection\dto\DetectionRequest.java
 D:\Code\Github\Sentinela\java-backend\src\main\java\com\sentinela\detection\dto\DetectionResponse.java
@@ -20,6 +22,8 @@ D:\Code\Github\Sentinela\java-backend\src\main\java\com\sentinela\event\entity\E
 D:\Code\Github\Sentinela\java-backend\src\main\java\com\sentinela\event\repository\EventRepository.java
 D:\Code\Github\Sentinela\java-backend\src\main\java\com\sentinela\event\service\EventService.java
 D:\Code\Github\Sentinela\java-backend\src\main\java\com\sentinela\exception\BusinessException.java
+D:\Code\Github\Sentinela\java-backend\src\main\java\com\sentinela\exception\ErrorResponse.java
+D:\Code\Github\Sentinela\java-backend\src\main\java\com\sentinela\exception\GlobalExceptionHandler.java
 D:\Code\Github\Sentinela\java-backend\src\main\java\com\sentinela\exception\ResourceNotFoundException.java
 D:\Code\Github\Sentinela\java-backend\src\main\java\com\sentinela\health\controller\HealthController.java
 D:\Code\Github\Sentinela\java-backend\src\main\java\com\sentinela\incident\controller\IncidentController.java
@@ -45,6 +49,7 @@ D:\Code\Github\Sentinela\java-backend\src\main\java\com\sentinela\securityrule\e
 D:\Code\Github\Sentinela\java-backend\src\main\java\com\sentinela\securityrule\entity\SecurityRule.java
 D:\Code\Github\Sentinela\java-backend\src\main\java\com\sentinela\securityrule\repository\SecurityRuleRepository.java
 D:\Code\Github\Sentinela\java-backend\src\main\java\com\sentinela\securityrule\service\SecurityRuleService.java
+D:\Code\Github\Sentinela\java-backend\src\main\java\com\sentinela\seed\controller\SeedController.java
 D:\Code\Github\Sentinela\java-backend\src\main\java\com\sentinela\SentinelaApplication.java
 D:\Code\Github\Sentinela\java-backend\src\main\java\com\sentinela\user\controller\UserController.java
 D:\Code\Github\Sentinela\java-backend\src\main\java\com\sentinela\user\dto\UserRequest.java

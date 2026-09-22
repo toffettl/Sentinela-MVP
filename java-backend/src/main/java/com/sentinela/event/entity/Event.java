@@ -8,6 +8,7 @@ import lombok.*;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 @Table(name = "events")
@@ -17,7 +18,11 @@ import java.time.LocalDateTime;
 public class Event {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "external_id", unique = true)
+    private UUID externalId;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "event_type", nullable = false)

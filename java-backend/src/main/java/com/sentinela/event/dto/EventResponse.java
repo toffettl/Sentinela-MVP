@@ -7,12 +7,16 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Getter
 @Setter
 public class EventResponse {
 
     private Long id;
+
+    @JsonProperty("external_id")
+    private UUID externalId;
 
     @JsonProperty("event_type")
     private EventType eventType;
@@ -25,6 +29,7 @@ public class EventResponse {
     public static EventResponse fromEntity(Event event) {
         EventResponse response = new EventResponse();
         response.setId(event.getId());
+        response.setExternalId(event.getExternalId());
         response.setEventType(event.getEventType());
         response.setTimestamp(event.getTimestamp());
         response.setSource(event.getSource());
