@@ -5,7 +5,6 @@ const dados = [
                 {
                     title: "123",
                     ativo: "Server",
-                    severidade : "CRITICAL",
                     risco: "96",
                     status: "ABERTO"
                 },
@@ -17,13 +16,22 @@ const dados = [
                 {
                     title: "1241231241234123412312412412412342134",
                     ativo: "123.456.789",
-                    severidade : "CRITICAL",
                     risco: "96",
                     status: "ABERTO"
                 },
             ],
     },
 ]
+
+const getSeveridadeByRisco = (risco) => {
+    const pontos = Number(risco);
+
+    if (pontos >= 75) return "CRITICAL";
+    if (pontos >= 50) return "HIGH";
+    if (pontos >= 25) return "MEDIUM";
+
+    return "LOW";
+};
 
 const severidadeStyle = {
     LOW: "bg-green-900 text-green-400",
@@ -47,7 +55,6 @@ const statusConfig = {
     },
 };
 
-
 export default function recentAlerts() {
     return(
         <div className="w-full h-full rounded-md bg-(--card) border-r border-(--border)" >
@@ -70,15 +77,17 @@ export default function recentAlerts() {
                         </thead>
                     {dados.map((section) => (
                         <tbody key={section.id} className="h-full w-full ">
-                            {section.items.map((item) => (
+                            {section.items.map((item) => {
+                            const severidade = getSeveridadeByRisco(item.risco);
+                        return(
                             <tr key={section.id} className="min-h-10 h-auto border border-(--cardBord)">
                                 <td className="px-4 py-2 text-md text-foreground">#{section.id}</td>
                                 <td className="max-w-32 px-4 py-2 text-md text-foreground whitespace-normal wrap-break-word">{item.title}</td>
                                 <td className="px-4 py-2 text-md text-foreground">{item.ativo}</td>
-                                <td className="px-4 py-2 text-md">
-                                    <span className={`px-4 py-2 rounded-full ${severidadeStyle[item.severidade]}`}>
-                                        {item.severidade}
-                                        </span>
+                                <td className="px-3 py-3 text-md">
+                                    <span className={`px-4 py-2 rounded-full ${severidadeStyle[severidade]}`}>
+                                        {severidade}
+                                    </span>
                                 </td>
                                 <td className="px-4 py-2  text-md text-foreground text-wrap">{item.risco}</td>
                                 <td className="px-4 py-2  text-md text-(--muted) text-wrap">
@@ -91,7 +100,8 @@ export default function recentAlerts() {
                                     </span>
                                 </td>
                             </tr>
-                             ))}
+                        );
+                                })}
                         </tbody>
                             ))}
                     </table>

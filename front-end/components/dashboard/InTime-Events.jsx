@@ -8,7 +8,7 @@ const dados = [
                 user: "Felipe",
                 active: "server-01",
                 attempts: "5",
-                level: "LOW",
+                risco: 10,
             }
         ],
     },
@@ -21,11 +21,21 @@ const dados = [
                 user: "Felipe",
                 active: "server-01",
                 attempts: "5",
-                level: "CRITICAL",
+                risco: 98,
             }
         ],
     },
 ]
+
+const getSeveridadeByRisco = (risco) => {
+    const pontos = Number(risco);
+
+    if (pontos >= 75) return "CRITICAL";
+    if (pontos >= 50) return "HIGH";
+    if (pontos >= 25) return "MEDIUM";
+
+    return "LOW";
+};
 
 const severidadeStyle = {
     LOW: "bg-green-900 text-green-400",
@@ -44,12 +54,14 @@ export default function InTimeEvent() {
                  {dados.map((section) => (
                 <div key={section.title} className="flex">
                     <ul className="h-full w-full">
-                            {section.items.map(item => (
+                            {section.items.map(item => {
+                                 const severidade = getSeveridadeByRisco(item.risco);
+                        return(
                         <li key={section.title} className="flex border border-(--cardBord) pr-4 pl-4 px-3 py-2 justify-between gap-4">
                                 <span className="text-sm text-(--muted)">
                                     {item.timeStamp}
                                 </span>
-                                <span className={`px-3 py-1 rounded-full ${severidadeStyle[item.level]}`}>
+                                <span className={`px-3 py-1 rounded-full ${severidadeStyle[severidade]}`}>
                                     {item.event}
                                 </span>
                                 <span className="text-sm text-(--muted)">
@@ -62,7 +74,8 @@ export default function InTimeEvent() {
                                     tentativa {item.attempts}
                                 </span>
                         </li>
-                            ))}
+                        )
+                        })}
                     </ul>
                 </div>
                  ))}

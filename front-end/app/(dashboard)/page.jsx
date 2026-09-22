@@ -57,7 +57,20 @@ export default function DashboardPage() {
 
         <div className="w-full h-full flex flex-row gap-4">
 
-          <EmpashisAlert score={50}/>
+          <EmpashisAlert  data={{
+            id: "123",
+            title: "123",
+            user: "root",
+            ip: "192.150.1.50",
+            ativo: "Server",
+            risco: 50,
+            status: "ABERTO",
+              messages:[
+                {
+                m_1 : "Brute force - 5 tentivas em 14s",
+                },
+              ],
+          }}/>
 
           <RulesTierList
           data={[
