@@ -39,7 +39,7 @@ public class DetectionService {
         detection.setEventCount(request.eventCount());
         detection.setEventIds(request.eventIds().stream().collect(Collectors.joining(",")));
         detection.setRiskPoints(evaluation.securityRule().getRiskPoints());
-        detectionRepository.save(detection);
+        detectionRepository.saveAndFlush(detection);
 
         if (evaluation.shouldCreateIncident()) {
             Incident incident = new Incident();
@@ -50,6 +50,7 @@ public class DetectionService {
             incident.setStatus(IncidentStatus.OPEN);
             incident.setIpInvolved(request.ip());
             incidentRepository.save(incident);
+            detectionRepository.resetRiskPointsByIp(request.ip());
         }
 
         return DetectionResponse.fromRequest(request);

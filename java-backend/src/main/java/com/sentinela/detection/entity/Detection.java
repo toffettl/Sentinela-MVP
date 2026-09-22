@@ -18,6 +18,7 @@ public class Detection {
     @Column(name = "event_count", nullable = false) private int eventCount;
     @Column(name = "event_ids", nullable = false, columnDefinition = "TEXT") private String eventIds;
     @Column(name = "risk_points", nullable = false) private int riskPoints;
+    @Column(name = "risk_points_active", nullable = false) private boolean riskPointsActive = true;
 
     public void setPattern(String pattern) { this.pattern = pattern; }
     public void setIp(String ip) { this.ip = ip; }
