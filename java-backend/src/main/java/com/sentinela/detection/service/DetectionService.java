@@ -45,7 +45,7 @@ public class DetectionService {
 
         if (evaluation.shouldCreateIncident()) {
             Incident incident = new Incident();
-            incident.setTitle("Detecção de " + request.pattern());
+            incident.setTitle("Possivel comprometimento de conta!"); // TODO: Titulo para cada tipo de pattern
             incident.setDescription("Risk Points atingiram o limite de incidente.");
             incident.setRiskScore(evaluation.riskPoints());
             incident.setSeverity(IncidentSeverity.CRITICAL);
