@@ -1,7 +1,9 @@
 package com.sentinela.detection.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.sentinela.detection.entity.Detection;
 
+import java.util.Arrays;
 import java.util.List;
 
 public record DetectionResponse(
@@ -17,6 +19,15 @@ public record DetectionResponse(
                 request.ip(),
                 request.eventCount(),
                 request.eventIds()
+        );
+    }
+
+    public static DetectionResponse fromEntity(Detection detection) {
+        return new DetectionResponse(
+                detection.getPattern(),
+                detection.getIp(),
+                detection.getEventCount(),
+                Arrays.stream(detection.getEventIds().split(",")).toList()
         );
     }
 }

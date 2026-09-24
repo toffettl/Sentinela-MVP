@@ -12,6 +12,8 @@ import com.sentinela.rule.engine.RuleEngine;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -54,5 +56,12 @@ public class DetectionService {
         }
 
         return DetectionResponse.fromRequest(request);
+    }
+
+    @Transactional
+    public List<DetectionResponse> findAll() {
+        List<DetectionResponse> lstDetectionResponse = new ArrayList<>();
+        lstDetectionResponse = detectionRepository.findAll().stream().map(DetectionResponse::fromEntity).toList();
+        return lstDetectionResponse;
     }
 }
