@@ -68,7 +68,7 @@ public class EventService {
 
     private EventType eventTypeFromRust(String eventType) {
         if ("LOGIN_SUCCESS".equals(eventType)) {
-            return EventType.LOGIN_SUCESS;
+            return EventType.LOGIN_SUCCESS;
         }
         return EventType.valueOf(eventType);
     }
