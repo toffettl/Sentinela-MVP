@@ -1,19 +1,19 @@
-import { apiClient } from "../api/client";
+import { apiClient, apiGet } from "../api/client";
 import {
   mockIncidents,
   mockIncidentEvents
 } from "../api/mock.js";
 
-export async function getEvents() {
-  return apiClient("/api/incidents");
+export async function getIncidents() {
+  return apiGet("/api/incidents");
 }
 
 export async function getIncidentEvents(id) {
-  return apiClient(`/api/incidents/${id}/events`)
+  return apiGet(`/api/incidents/${id}/events`)
 }
 
 export async function getIncidentId(id) {
-  return apiClient(`/api/incidents/${id}`)
+  return apiGet(`/api/incidents/${id}`)
 }
 
 export async function getMockIncidents() {

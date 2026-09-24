@@ -1,7 +1,7 @@
-import { apiClient } from "../api/client";
+import { apiClient, apiGet } from "../api/client";
 
 export async function getEvents() {
-  return apiClient("/api/events");
+  return apiGet("/api/events");
 }
 
 

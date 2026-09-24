@@ -1,34 +1,62 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { getEvents } from "@/services/events/events.service";
+import { getIncidents } from "@/services/incidents/incidents.service";
 
-export default function useEvents() {
-  const [events, setEvents] = useState([]);
+export default function useIncidents() {
+  const [incidents, setIncidents] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [highlightedIncident, setHighlightedIncident] = useState(null);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    async function loadEvents() {
+    let isMounted = true;
+
+    async function loadIncidents() {
       try {
-        setLoading(true);
+        const data = await getIncidents();
 
-        const data = await getEvents();
+        setIncidents(data);
 
-        setEvents(data);
-      } catch (error) {
-        setError(error);
-      } finally {
-        setLoading(false);
-      }
+         if (data.length > 0) {
+          const highestRiskIncident = data.reduce((highest, current) => {
+            return Number(current.riskScore) > Number(highest.riskScore)
+              ? current
+              : highest;
+          });
+
+          setHighlightedIncident(highestRiskIncident);
+        }
+
+            if (isMounted) {
+                    setIncidents(data);
+                }
+            } catch (error) {
+                if (isMounted) {
+                    setError(error);
+                }
+            } finally {
+                if (isMounted) {
+                    setLoading(false);
+                }
+            }
     }
 
-    loadEvents();
+    loadIncidents();
+
+    const interval = setInterval(loadIncidents, 10000);
+
+        return () => {
+            isMounted = false;
+            clearInterval(interval);
+        };
   }, []);
 
   return {
-    events,
+    incidents,
+    highlightedIncident,
     loading,
     error,
   };
 }
+

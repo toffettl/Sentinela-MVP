@@ -1,8 +1,8 @@
-import { apiClient } from "../api/client";
+import { apiClient, apiGet } from "../api/client";
 import { mockDashboard } from "../api/mock";
 
 export async function getDashboard() {
-  return apiClient("/api/dashboard/summary");
+  return apiGet("/api/dashboard/summary");
 }
 
 export async function getMockDashboard() {

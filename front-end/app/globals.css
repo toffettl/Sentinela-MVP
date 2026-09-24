@@ -12,6 +12,7 @@
   --notSelectBallButton:#9f9fa9;
   --selectButtonBg: #000000;
   --selectBallButton:#faf9f9;
+  --scrollbarColor:#000000;
 }
 
 @theme inline {
@@ -39,6 +40,7 @@ body {
   --notSelectBallButton:#9f9fa9;
   --selectButtonBg: #ffffff;
   --selectBallButton:#000000;
+  --scrollbarColor:#ffff;
 }
 
 .high-contrast { 

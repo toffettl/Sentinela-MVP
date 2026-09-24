@@ -11,33 +11,67 @@ import useIncidentEvents from "../../hooks/useIncidentsEvents";
 import useIncidents from "../../hooks/useIncidents";
 import useDashboard from "@/hooks/useDashboard";
 import { useMockDashboard } from "../../hooks/mocks/useMockDashboard";
+import useDetections from "../../hooks/useDetections";
 
 
 export default function DashboardPage() {
-   //const { events } = useEvents();
-  // const {incidents} = useIncidents();
-   //const { incidentsEvents } = useIncidentEvents();
-   //const {dashboardData} = useDashboard();
+   const {
+        events,
+        loading: eventsLoading,
+        error : eventsError
+    } = useEvents();
+   const {
+        incidents,
+        highlightedIncident,
+        loading: incidentsLoading,
+        error : incidentsError
+    } = useIncidents();
+
+   const { incidentsEvents } = useIncidentEvents();
 
    const {
         dashboard,
-        loading,
-        error
-    } = useMockDashboard();
+        loading: dashboardLoading,
+        error : dashboardError
+    } = useDashboard();
 
-    if (loading) {
-        return <p>Carregando dashboard...</p>;
+    const {
+        detections,
+        loading: detectionLoading,
+        error : detectionError
+    } = useDetections();
+
+    
+    if (eventsLoading || incidentsLoading || dashboardLoading || detectionLoading) {
+      return <p>Carregando dashboard...</p>;
     }
-
-    if (error) {
-        return <p>Erro ao carregar dashboard.</p>;
+    
+    if (eventsError || incidentsError || dashboardError || detectionError ) {
+      return <p>Erro ao carregar dashboard.</p>;
     }
-
-    if (!dashboard) {
-        return <p>Nenhum dado encontrado.</p>;
+    
+    if (!dashboard || !incidents || !events ) {
+      return <p>Nenhum dado encontrado.</p>;
     }
+    const eventTypeCounts = detections.reduce((acc, detections) => {
+      const type = detections.pattern;
 
+      if (!type) return acc;
 
+      acc[type] = (acc[type] || 0) + 1;
+
+      return acc;
+    }, {});
+
+    const rulesTierListData = Object.entries(eventTypeCounts)
+    .map(([eventType, count]) => ({
+        rule: eventType,
+        name: "SUSPICIOUS",
+        value: count,
+        color: "bg-green-500",
+    }))
+    .sort((a, b) => b.value - a.value);
+    
   return (
     <div className="flex flex-col gap-4 h-full w-full min-w-250 min-h-250">
       <h1 className="text-3xl font-bold">
@@ -50,65 +84,27 @@ export default function DashboardPage() {
 
         <div className=" flex flex-row gap-4 w-full">
           <StatCard title={"Requisições feitas"} value={dashboard.totalEvents + dashboard.totalIncidents}/>
-          <StatCard title={"IPs suspeitos"} value={dashboard.activeAssets}/>
-          <StatCard title={"Anomalias possiveis"} value={dashboard.criticalIncidents}/>
-          <StatCard title={"Logs coletados"} value={dashboard.highIncidents}/>
+          <StatCard title={"Assets ativos"} value={dashboard.activeAssets}/>
+          <StatCard title={"Incidentes criticos"} value={dashboard.criticalIncidents}/>
+          <StatCard title={"Possiveis anomalias"} value={dashboard.highIncidents}/>
         </div>
 
         <div className="w-full h-full flex flex-row gap-4">
 
-          <EmpashisAlert  data={{
-            id: "123",
-            title: "123",
-            user: "root",
-            ip: "192.150.1.50",
-            ativo: "Server",
-            risco: 50,
-            status: "ABERTO",
-              messages:[
-                {
-                m_1 : "Brute force - 5 tentivas em 14s",
-                },
-              ],
-          }}/>
+          <EmpashisAlert  data={highlightedIncident}/>
 
           <RulesTierList
-          data={[
-              {
-                  rule: "BruteForce",
-                  name: "Normal",
-                  value: 200,
-                  color: "bg-green-500",
-              },
-              {
-                  rule: "Login fora do horário",
-                  name: "LOW",
-                  value: 64,
-                  color: "bg-yellow-300",
-              },
-              {
-                  rule: "IP não reconhecido",
-                  name: "SUSPICIOUS",
-                  value: 10,
-                  color: "bg-orange-500",
-              },
-              {
-                  rule: "Download anormal",
-                  name: "CRITICAL",
-                  value: 4,
-                  color: "bg-red-600",
-              },
-          ]}/>
+          data={rulesTierListData}/>
 
         </div>
-        <div className="flex flex-row gap-2 w-full h-full min-h-100">
+        <div className="flex flex-row gap-2 w-full h-full">
 
           <div>
-            <InTimeEvent/>
+            <InTimeEvent data={events}/>
           </div>
 
           <div>
-            <RecentAlerts/>
+            <RecentAlerts data={incidents}/>
           </div>
         </div>
     </div>

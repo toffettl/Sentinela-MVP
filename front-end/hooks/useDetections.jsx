@@ -1,25 +1,26 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { getEvents } from "@/services/events/events.service";
+import { getDetections } from "../services/detections/detections.service";
 
-export default function useEvents() {
-    const [events, setEvents] = useState([]);
+export default function useDetections() {
+    const [detections, setDetections] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
     useEffect(() => {
         let isMounted = true;
 
-        async function loadEvents() {
+        async function loadDetections() {
             try {
-                const data = await getEvents();
+                const data = await getDetections();
 
                 if (isMounted) {
-                    setEvents(data);
+                    setDetections(data);
                 }
             } catch (error) {
                 if (isMounted) {
+                    console.error("Erro ao carregar dashboard:", error);
                     setError(error);
                 }
             } finally {
@@ -29,9 +30,13 @@ export default function useEvents() {
             }
         }
 
-        loadEvents();
+        // primeira carga
+        loadDetections();
 
-        const interval = setInterval(loadEvents, 10000);
+        // atualizações
+        const interval = setInterval(() => {
+            loadDetections();
+        }, 10000);
 
         return () => {
             isMounted = false;
@@ -40,7 +45,7 @@ export default function useEvents() {
     }, []);
 
     return {
-        events,
+        detections,
         loading,
         error,
     };

@@ -51,7 +51,7 @@ export default function RulesTierList({data}) {
 
                                 <div className="flex items-center gap-2">
                                     <span
-                                        className={`h-2 w-2 rounded-full ${item.color}`}
+                                        className={`h-2 w-2 rounded-full ${categoryConfig[item.name]?.color}`}
                                     />
 
                                     <span className="text-sm text-foreground">
@@ -71,7 +71,7 @@ export default function RulesTierList({data}) {
 
                             <div className="w-full h-2 bg-(--cardBord) rounded-full">
                                 <div
-                                    className={`h-2 rounded-full ${item.color}`}
+                                    className={`h-2 rounded-full ${categoryConfig[item.name]?.color}`}
                                     style={{
                                         width: `${percentage}%`
                                     }}

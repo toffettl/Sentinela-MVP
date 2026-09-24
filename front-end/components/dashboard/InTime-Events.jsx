@@ -1,38 +1,9 @@
-const dados = [
-    {
-        title: "LoginFelipe",
-        items: [
-            {
-                timeStamp: "10:04:12",
-                event: "LOGIN_SUCESS",
-                user: "Felipe",
-                active: "server-01",
-                attempts: "5",
-                risco: 10,
-            }
-        ],
-    },
-    {   
-        title: "BruteForce",
-        items: [
-            {
-                timeStamp: "10:04:12",
-                event: "BRUTE_FORCE",
-                user: "Felipe",
-                active: "server-01",
-                attempts: "5",
-                risco: 98,
-            }
-        ],
-    },
-]
-
 const getSeveridadeByRisco = (risco) => {
-    const pontos = Number(risco);
+    const pontos = String(risco);
 
-    if (pontos >= 75) return "CRITICAL";
-    if (pontos >= 50) return "HIGH";
-    if (pontos >= 25) return "MEDIUM";
+    if (pontos == "LOGIN_FAILED") return "MEDIUM";
+    if (pontos == "LOGIN_SUCCESS") return "LOW";
+    if (pontos != " ") return "CRITICAL";
 
     return "LOW";
 };
@@ -44,41 +15,55 @@ const severidadeStyle = {
     CRITICAL: "bg-red-900 text-red-400",
 };
 
-export default function InTimeEvent() {
-    return(
+export default function InTimeEvent({ data }) {
+    return (
         <div className="w-full h-full rounded-md bg-(--card) border-r border-(--border)">
-                <div className="flex justify-between  p-4 border rounded-t-md border-(--cardBord)">
-                    <h1 className="text-foreground text-lg">Eventos Ao vivo</h1>
-                    <span className={`inline w-2 h-2 bg-green-500 rounded-lg`}></span>
-                </div>
-                 {dados.map((section) => (
-                <div key={section.title} className="flex">
-                    <ul className="h-full w-full">
-                            {section.items.map(item => {
-                                 const severidade = getSeveridadeByRisco(item.risco);
-                        return(
-                        <li key={section.title} className="flex border border-(--cardBord) pr-4 pl-4 px-3 py-2 justify-between gap-4">
-                                <span className="text-sm text-(--muted)">
-                                    {item.timeStamp}
-                                </span>
-                                <span className={`px-3 py-1 rounded-full ${severidadeStyle[severidade]}`}>
-                                    {item.event}
-                                </span>
-                                <span className="text-sm text-(--muted)">
-                                    {item.user}
-                                </span>
-                                <span className="text-sm text-(--muted)">
-                                    @ {item.active}
-                                </span>
-                                <span className="text-sm text-(--muted)">
-                                    tentativa {item.attempts}
-                                </span>
-                        </li>
-                        )
-                        })}
-                    </ul>
-                </div>
-                 ))}
+            <div className="shrink-0 flex justify-between  p-4 border rounded-t-md border-(--cardBord)">
+                <h1 className="text-foreground text-lg">Eventos Ao vivo</h1>
+                <span className={`inline w-2 h-2 bg-green-500 rounded-lg`}></span>
+            </div>
+            <div className="max-h-80 overflow-y-auto scrollbar-thumb-(--scrollbarColor)">
+
+                {[...data]
+                    .sort((a, b) => Number(b.id) - Number(a.id))
+                    .map((event , index) => {
+
+                    const severidade = getSeveridadeByRisco(event.event_type);
+
+                    return (
+                        <div
+                            key={event.id ?? index}
+                            className="flex border-b border-(--cardBord) px-4 py-2 justify-between items-center gap-4"
+                        >
+
+                            <span className="text-sm text-(--muted)">
+                                {event.timestamp}
+                            </span>
+
+                            <span
+                                className={`px-3 py-1 rounded-full text-xs ${severidadeStyle[severidade]}`}
+                            >
+                                {event.event_type}
+                            </span>
+
+                            <span className="text-sm text-(--muted)">
+                                {event.user}
+                            </span>
+
+                            <span className="text-sm text-(--muted)">
+                                @ {event.ip}
+                            </span>
+
+                            <span className="text-sm text-(--muted)">
+                                tentativa {event.attempts}
+                            </span>
+
+                        </div>
+                    );
+                })}
+
+            </div>
+            <div className="shrink-0 p-4 border rounded-b-md border-(--cardBord)"></div>
         </div>
     )
 }

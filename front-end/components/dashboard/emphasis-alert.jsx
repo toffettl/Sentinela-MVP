@@ -1,5 +1,5 @@
 export default function empashisAlert ({data}) {
-    const percentage = Math.min(Math.max(data.risco, 0), 100);
+    const percentage = Math.min(Math.max(data?.riskScore, 0), 150);
     const degrees = percentage * 3.6;
 
     const getSeveridadeByRisco = (risco) => {
@@ -52,14 +52,14 @@ export default function empashisAlert ({data}) {
                         className="relative h-56 w-56 rounded-full m-6"
                         style={{
                             background: `conic-gradient(
-                                ${statusBorder[getSeveridadeByRisco(data.risco)]?.className} 0deg ${degrees}deg,
+                                ${statusBorder[getSeveridadeByRisco(data?.riskScore)]?.className} 0deg ${degrees}deg,
                                 #272b35 ${degrees}deg 360deg
                             )`,
                         }}
                     >
                         <div className="absolute inset-2 flex flex-col items-center justify-center rounded-full bg-[#11151d]">
                             <span className="text-2xl font-bold text-white">
-                                {data.risco}
+                                {data?.riskScore}
                             </span>
 
                             <span className="text-[10px] uppercase text-zinc-500">
@@ -69,19 +69,19 @@ export default function empashisAlert ({data}) {
                     </div>
                 <div className="flex flex-col w-full gap-2 p-2 bg-(--cardPanel) rounded-lg m-2">
                         <div className="flex flex-col m-2 gap-2">
-                            <h1 className="text-foreground text-lg">Possível comprometimento de conta</h1>
+                            <h1 className="text-foreground text-lg">{data?.title}</h1>
                             <div className="flex flex-row gap-2">
                                 <div className="flex w-full gap-2">
                                 <span className="text-(--muted) text-sm">Usuário</span>
-                                 <p className="text-foreground text-sm">{data.user}</p>
+                                 <p className="text-foreground text-sm">{data?.userInvolved ?? "????"} </p>
                                 </div>
                                 <div className="flex w-full gap-2">
                                 <span className="text-(--muted) text-sm">IP</span>
-                                 <p className="text-foreground text-sm">{data.ip}</p>
+                                 <p className="text-foreground text-sm">{data?.ipInvolved}</p>
                                 </div>
                                 <div className="flex w-full gap-2">
-                                <span className="text-(--muted) text-sm">Ativo</span>
-                                 <p className="text-foreground text-sm">{data.ativo}</p>
+                                <span className="text-(--muted) text-sm">Status</span>
+                                 <p className="text-foreground text-sm">{data?.status}</p>
                                 </div>
                             </div>
                         </div>
@@ -89,28 +89,18 @@ export default function empashisAlert ({data}) {
                             <ul className="flex flex-col">
                                 <li className="py-2 px-3 ">
                                     <span className={`inline-block h-2 w-2 rounded-full ${
-                                                    statusConfig[getSeveridadeByRisco(data.risco)]?.className
+                                                    statusConfig[getSeveridadeByRisco(data?.riskScore)]?.className
                                                 }`}> </span>
-                                    <span className="text-(--muted) text-md">  Brute force - 5 tentivas em 14s</span>
+                                    <span className="text-(--muted) text-md">  {data?.description}</span>
                                 </li>
+                            {data?.notes.map((section) => (
                                 <li className="py-2 px-3 ">
                                     <span className={`inline-block h-2 w-2 rounded-full ${
-                                                    statusConfig[getSeveridadeByRisco(data.risco)]?.className
-                                                }`}></span>
-                                    <span className="text-(--muted) text-md">  Brute force - 5 tentivas em 14s</span>
+                                                    statusConfig[getSeveridadeByRisco(section?.riskScore)]?.className
+                                                }`}> </span>
+                                    <span className="text-(--muted) text-md">  {section?.title}</span>
                                 </li>
-                                <li className="py-2 px-3 ">
-                                    <span className={`inline-block h-2 w-2 rounded-full ${
-                                                    statusConfig[getSeveridadeByRisco(data.risco)]?.className
-                                                }`}></span>
-                                    <span className="text-(--muted) text-md">  Brute force - 5 tentivas em 14s</span>
-                                </li>
-                                <li className="py-2 px-3">
-                                    <span className={`inline-block h-2 w-2 rounded-full ${
-                                                    statusConfig[getSeveridadeByRisco(data.risco)]?.className
-                                                }`}></span>
-                                    <span className="text-(--muted) text-md">  Brute force - 5 tentivas em 14s</span>
-                                </li>
+                        ))}
                             </ul>
                         </div>
                         <div className="flex flex-row gap-4 w-full h-full">

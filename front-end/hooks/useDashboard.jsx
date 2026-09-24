@@ -1,34 +1,52 @@
-"use client"
+"use client";
 
 import { useEffect, useState } from "react";
 import { getDashboard } from "@/services/dashboard/dashboard.service";
 
 export default function useDashboard() {
-  const [dashboard, setDashboard] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+    const [dashboard, setDashboard] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
-  useEffect(() => {
-    async function loadDashboard() {
-      try {
-        setLoading(true);
+    useEffect(() => {
+        let isMounted = true;
 
-        const data = await getDashboard();
+        async function loadDashboard() {
+            try {
+                const data = await getDashboard();
 
-        setDashboard(data);
-      } catch (error) {
-        setError(error);
-      } finally {
-        setLoading(false);
-      }
-    }
+                if (isMounted) {
+                    setDashboard(data);
+                }
+            } catch (error) {
+                if (isMounted) {
+                    console.error("Erro ao carregar dashboard:", error);
+                    setError(error);
+                }
+            } finally {
+                if (isMounted) {
+                    setLoading(false);
+                }
+            }
+        }
 
-    loadDashboard();
-  }, []);
+        // primeira carga
+        loadDashboard();
 
-  return {
-    dashboard,
-    loading,
-    error,
-  };
+        // atualizações
+        const interval = setInterval(() => {
+            loadDashboard();
+        }, 10000);
+
+        return () => {
+            isMounted = false;
+            clearInterval(interval);
+        };
+    }, []);
+
+    return {
+        dashboard,
+        loading,
+        error,
+    };
 }
